@@ -7,6 +7,7 @@ object GameOfLife {
 
     val board = new Board(5)
     println (board)
+    board.Next
 
   }
 }

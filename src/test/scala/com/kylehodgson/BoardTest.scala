@@ -21,14 +21,19 @@ class BoardTest extends FunSuite {
     assert(currentState(firstPipeCharacter)=='-')
     assert(currentState(lastPipeCharacter)=='-')
   }
-  test("Board can get the neighbors for a specific, central cell that don't include that cell") {
+  test("Board can get the neighbors for a specific, central cell") {
     val board = new Board(5)
     val neighborList = board.NeighborsFor(3,3)
-    assert(!neighborList.exists(c => c.row == 3 && c.col == 3))
     for( cursorRow <- 2 to 4; cursorCol <- 2 to 4; if cursorRow != 3 && cursorCol != 3 ) {
+      println("asserting that cell with row " + cursorRow + " " + cursorCol + " is present.")
       assert(neighborList.find(c=>c.row==cursorRow && c.col==cursorCol).size==1,
         "Missing neighbor: row " + cursorRow + " col " + cursorCol)
     }
+  }
+  test("When board gets neighbors it doesnt accidentally get the cell itself") {
+    val board = new Board(5)
+    val neighborList = board.NeighborsFor(3,3)
+    assert(!neighborList.exists(c => c.row == 3 && c.col == 3))
   }
   test("When a board gets neighbors it handles edge cases correctly") {
     val board = new Board(5)
@@ -41,8 +46,16 @@ class BoardTest extends FunSuite {
   }
   test("Board can get live neighbors for a cell") {
     val board = new Board(5)
-    val liveNeighbors = board.NeighborsFor(3, 3).filter(c=>c.alive)
+    val liveNeighbors = board.LiveNeighborsFor(3, 3)
     assert(liveNeighbors.nonEmpty,"Center cell likely has *some* live neighbors")
     assert(!liveNeighbors.exists(c => !c.alive),"Live neighbors shouldn't include dead cells")
   }
+  test("Board can get next generation") {
+    val board = new Board(5)
+    val initialCells = board.cells
+    board.Next
+    val nextGenerationCells = board.cells
+    assert(initialCells != nextGenerationCells, "\nNext generation was identical to current generation...")
+  }
+
 }

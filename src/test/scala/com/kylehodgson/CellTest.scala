@@ -4,7 +4,7 @@ import org.scalatest.FunSuite
 
 class CellTest extends FunSuite {
 
-  test("Cells can render themselves") {
+  test("Cells can render themselves in a board") {
     assert(Cell(1, 1, alive = true).Render()==".")
     assert(Cell(1, 1, alive = false).Render()==" ")
   }
