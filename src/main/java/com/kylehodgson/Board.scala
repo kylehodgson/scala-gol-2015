@@ -3,7 +3,9 @@ package com.kylehodgson
 import scala.util.Random
 
 
-class Board(size:Int) {
+class Board(pSize:Int) {
+  def size:Int = pSize
+
   def NeighborsFor(targetRow: Int, targetCol: Int) = {
     for (row <- 1 to size; col <- 1 to size)
       yield cells.filter(
@@ -13,21 +15,15 @@ class Board(size:Int) {
             c.row != targetRow && c.col != targetCol)
   }.flatMap(c => c)
 
-  var cells = {
+  val cells = {
     for (row <- 1 to size; col <- 1 to size)
       yield Cell(row, col, alive = new Random().nextBoolean())
   }
 
-  def Size():Int = size
-
-  def ConsolePrint() {
-    for (row <- 1 to size; col <- 1 to size)
-      cells.find(c=>c.row==row && c.col==col)
-        .foreach ( _.ConsolePrint())
-  }
-
-  def Render(): String = {
-    var board = "\n"
+  override def toString: String = {
+    var board = " "
+    for( i<- 1 to size) board += "---"
+    board += "\n"
     for (row <- 1 to size) {
       board += "|"
       for ( col <- 1 to size) {
@@ -36,6 +32,8 @@ class Board(size:Int) {
       }
       board += "|\n"
     }
+    board += " "
+    for( i<- 1 to size) board += "---"
     board
   }
 }

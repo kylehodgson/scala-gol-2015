@@ -6,7 +6,7 @@ class BoardTest extends FunSuite {
   test("Board has a size") {
     val testSize = 6
     val testBoard = new Board(testSize)
-    assert(testBoard.Size() == testSize )
+    assert(testBoard.size == testSize )
   }
   test("Board can initialize with random patterns") {
     val target = new Board(5)
@@ -15,8 +15,11 @@ class BoardTest extends FunSuite {
   }
   test("Board can render") {
     val target = new Board(5)
-    val currentState = target.Render()
-    assert(currentState.apply(1)=='|')
+    val currentState = target.toString()
+    val firstPipeCharacter = 1
+    val lastPipeCharacter = currentState.length - 2
+    assert(currentState(firstPipeCharacter)=='-')
+    assert(currentState(lastPipeCharacter)=='-')
   }
   test("Board can get the neighbors for a specific, central cell that don't include that cell") {
     val board = new Board(5)
@@ -35,5 +38,11 @@ class BoardTest extends FunSuite {
       assert(neighborList.find(c=>c.row==cursorRow && c.col==cursorCol).size==1,
         "Missing neighbor: row " + cursorRow + " col " + cursorCol)
     }
+  }
+  test("Board can get live neighbors for a cell") {
+    val board = new Board(5)
+    val liveNeighbors = board.NeighborsFor(3, 3).filter(c=>c.alive)
+    assert(liveNeighbors.nonEmpty,"Center cell likely has *some* live neighbors")
+    assert(!liveNeighbors.exists(c => !c.alive),"Live neighbors shouldn't include dead cells")
   }
 }
