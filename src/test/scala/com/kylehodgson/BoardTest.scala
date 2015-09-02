@@ -25,7 +25,6 @@ class BoardTest extends FunSuite {
     val board = new Board(5)
     val neighborList = board.NeighborsFor(3,3)
     for( cursorRow <- 2 to 4; cursorCol <- 2 to 4; if cursorRow != 3 && cursorCol != 3 ) {
-      println("asserting that cell with row " + cursorRow + " " + cursorCol + " is present.")
       assert(neighborList.find(c=>c.row==cursorRow && c.col==cursorCol).size==1,
         "Missing neighbor: row " + cursorRow + " col " + cursorCol)
     }

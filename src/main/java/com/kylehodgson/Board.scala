@@ -6,16 +6,11 @@ import scala.util.Random
 class Board(pSize:Int) {
   def size:Int = pSize
 
-  def NeighborsFor(targetRow: Int, targetCol: Int) = {
-    val rowUpperBounds = targetRow + 1
-    val rowLowerBounds = targetRow - 1
-    val columnUpperBounds = targetCol + 1
-    val columnLowerBounds = targetCol - 1
-    cells.filter(c =>
-      c.row <= rowUpperBounds && c.row >= rowLowerBounds &&
-      c.col <= columnUpperBounds && c.col >= columnLowerBounds
-    )
-  }
+  def NeighborsFor(targetRow: Int, targetCol: Int) = cells.filter(
+    c =>
+      c.row <= targetRow + 1 && c.row >= targetRow - 1 &&
+        c.col <= targetCol + 1 && c.col >= targetCol - 1 &&
+        (c.col != targetCol && c.row != targetRow))
 
   def LiveNeighborsFor(targetRow: Int, targetCol: Int) = {
     NeighborsFor(targetRow, targetCol).filter(c=>c.alive)
@@ -28,11 +23,13 @@ class Board(pSize:Int) {
 
   def Next = {
     for (cursorRow <- 1 to size; cursorCol <- 1 to size) {
-      val liveNeighbors = LiveNeighborsFor(cursorRow, cursorCol).length
-      if (liveNeighbors <2 || liveNeighbors > 3) println("Cell %d %d is dead".format(cursorRow, cursorCol))
-      if (liveNeighbors >=2 && liveNeighbors <= 3) println("Cell %d %d is alive".format(cursorRow, cursorCol))
+      if (LiveNeighborsFor(cursorRow, cursorCol).length <2 || LiveNeighborsFor(cursorRow, cursorCol).length > 3)
+        new Cell(row = cursorRow, col = cursorCol, alive = false)
+      if (LiveNeighborsFor(cursorRow, cursorCol).length >=2 && LiveNeighborsFor(cursorRow, cursorCol).length <= 3)
+        new Cell(row = cursorRow, col = cursorCol, alive = true)
     }
   }
+
   override def toString: String = {
     var board = " "
     for( i<- 1 to size) board += "---"

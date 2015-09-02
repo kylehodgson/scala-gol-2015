@@ -7,7 +7,6 @@ object GameOfLife {
 
     val board = new Board(5)
     println (board)
-    board.Next
-
+    while(true) println(board.Next)
   }
 }
