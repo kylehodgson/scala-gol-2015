@@ -8,25 +8,29 @@ class Board(pSize: Int) {
 
   def NeighborsFor(targetRow: Int, targetCol: Int) = cells.filter(
     c =>
-      c.row <= targetRow + 1 && c.row >= targetRow - 1 &&
-        c.col <= targetCol + 1 && c.col >= targetCol - 1 &&
-        (c.col != targetCol && c.row != targetRow))
+      c.row <= targetRow + 1 &&
+        c.row >= targetRow - 1 &&
+        c.col <= targetCol + 1 &&
+        c.col >= targetCol - 1 &&
+        !(c.col == targetCol && c.row == targetRow))
 
   def LiveNeighborsFor(targetRow: Int, targetCol: Int) =
     NeighborsFor(targetRow, targetCol).filter(c => c.alive)
 
-  val cells = {
+  var cells = {
     for (row <- 1 to size; col <- 1 to size)
       yield Cell(row, col, alive = new Random().nextBoolean())
   }
 
   def Next = {
-    for (cursorRow <- 1 to size; cursorCol <- 1 to size) {
-      if (LiveNeighborsFor(cursorRow, cursorCol).length < 2 || LiveNeighborsFor(cursorRow, cursorCol).length > 3)
-        new Cell(row = cursorRow, col = cursorCol, alive = false)
-      if (LiveNeighborsFor(cursorRow, cursorCol).length >= 2 && LiveNeighborsFor(cursorRow, cursorCol).length <= 3)
-        new Cell(row = cursorRow, col = cursorCol, alive = true)
+    val nextGen = for (cursorRow <- 1 to size; cursorCol <- 1 to size) yield {
+      new Cell(row = cursorRow, col = cursorCol,
+        alive = if (LiveNeighborsFor(cursorRow, cursorCol).length >= 2 &&
+          LiveNeighborsFor(cursorRow, cursorCol).length <= 3) true
+        else false
+      )
     }
+    cells = nextGen
   }
 
   override def toString: String = {

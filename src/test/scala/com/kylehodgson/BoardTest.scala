@@ -13,13 +13,13 @@ class BoardTest extends FunSuite {
     assert(target.cells.exists(c => c.alive))
     assert(target.cells.exists(c => !c.alive))
   }
-  test("Board can render") {
+  test("Board renders to console") {
     val target = new Board(5)
     val currentState = target.toString()
-    val firstPipeCharacter = 1
-    val lastPipeCharacter = currentState.length - 2
-    assert(currentState(firstPipeCharacter) == '-')
-    assert(currentState(lastPipeCharacter) == '-')
+    val firstHyphen = 1
+    val lastHyphen = currentState.length - 2
+    assert(currentState(firstHyphen) == '-')
+    assert(currentState(lastHyphen) == '-')
   }
   test("Board can get the neighbors for a specific, central cell") {
     val board = new Board(5)
@@ -29,7 +29,7 @@ class BoardTest extends FunSuite {
         "Missing neighbor: row " + cursorRow + " col " + cursorCol)
     }
   }
-  test("When board gets neighbors it doesnt accidentally get the cell itself") {
+  test("When board gets neighbors it doesn't accidentally get the cell itself") {
     val board = new Board(5)
     val neighborList = board.NeighborsFor(3, 3)
     assert(!neighborList.exists(c => c.row == 3 && c.col == 3))
