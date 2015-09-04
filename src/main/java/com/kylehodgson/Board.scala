@@ -23,14 +23,13 @@ class Board(pSize: Int) {
   }
 
   def Next = {
-    val nextGen = for (cursorRow <- 1 to size; cursorCol <- 1 to size) yield {
+    cells = for (cursorRow <- 1 to size; cursorCol <- 1 to size) yield {
       new Cell(row = cursorRow, col = cursorCol,
         alive = if (LiveNeighborsFor(cursorRow, cursorCol).length >= 2 &&
           LiveNeighborsFor(cursorRow, cursorCol).length <= 3) true
         else false
       )
     }
-    cells = nextGen
   }
 
   override def toString: String = {

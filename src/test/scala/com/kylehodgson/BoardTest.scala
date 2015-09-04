@@ -45,16 +45,20 @@ class BoardTest extends FunSuite {
   }
   test("Board can get live neighbors for a cell") {
     val board = new Board(5)
+    val neighbors = board.NeighborsFor(3,3)
     val liveNeighbors = board.LiveNeighborsFor(3, 3)
-    assert(liveNeighbors.nonEmpty, "Center cell likely has *some* live neighbors")
-    assert(!liveNeighbors.exists(c => !c.alive), "Live neighbors shouldn't include dead cells")
+    if (neighbors.exists(c => c.alive)) {
+      assert(liveNeighbors.nonEmpty, "\nLiveNeighborsFor missed a live neighbor.")
+    }
+    assert(!liveNeighbors.exists(c => !c.alive), "\nLive neighbors shouldn't include dead cells")
   }
   test("Board can get next generation") {
     val board = new Board(5)
     val initialCells = board.cells
     board.Next
     val nextGenerationCells = board.cells
-    assert(initialCells != nextGenerationCells, "\nNext generation was identical to current generation...")
+    assert(initialCells != nextGenerationCells,
+      "\nNext generation should never be identical to current generation.")
   }
 
 }
