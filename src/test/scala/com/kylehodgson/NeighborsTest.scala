@@ -6,12 +6,8 @@ class NeighborsTest extends FunSuite {
   test("NeighborsFrom can get neighbors from a named location within a sequence of cells ") {
     val board = new Board(5)
     val neighborList = Neighbors.From(3, 3, board.cells)
-    for (cursorRow <- 2 to 4; cursorCol <- 2 to 4) {
-      if (cursorRow == 3 && cursorCol == 3) {
-        assert(!neighborList.exists(c=>c.col==3 && c.row==3))
-      } else {
+    for (cursorRow <- 2 to 4; cursorCol <- 2 to 4;if (!(cursorRow == 3 && cursorCol == 3))) {
         assert(neighborList.exists(c => c.row == cursorRow && c.col == cursorCol))
-      }
     }
   }
   
@@ -20,22 +16,13 @@ class NeighborsTest extends FunSuite {
     val neighborList = LiveNeighbors.From(3, 3, board.cells)
     assert(!neighborList.exists(c => c.row == 3 && c.col == 3))
   }
-  
+
   test("When NeighborsFrom gets neighbors it handles edge cases correctly") {
     val board = new Board(5)
     val neighborList = Neighbors.From(1, 1, board.cells)
-    assert(!neighborList.exists(c => c.row == 3 && c.col == 3))
-    for (cursorRow <- 1 to 2; cursorCol <- 1 to 2) {
-      if (cursorCol == 1 && cursorRow == 1) {
-        assert(!neighborList.exists(c => c.row == 1 && c.col==1),
-          "\nNeighborsFrom should not return the center cell")
-      } else {
-        val cell = neighborList.find(c => c.row == cursorRow && c.col == cursorCol)
-        println("Test found cell %d %d : %s".format(cursorRow, cursorCol, cell.toString))
-        assert(neighborList.exists(c => c.row == cursorRow && c.col == cursorCol),
-          "\nMissing neighbor: row " + cursorRow + " col " + cursorCol)
-      }
-
+    for (cursorRow <- 1 to 2; cursorCol <- 1 to 2; if (!(cursorCol == 1 && cursorRow == 1))) {
+      assert(neighborList.exists(c => c.row == cursorRow && c.col == cursorCol),
+        "\nMissing neighbor: row " + cursorRow + " col " + cursorCol)
     }
   }
   
