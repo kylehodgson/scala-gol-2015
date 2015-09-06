@@ -14,8 +14,8 @@ class Board(pSize: Int) {
   def Next = {
     cells = for (cursorRow <- 1 to size; cursorCol <- 1 to size) yield {
       new Cell(row = cursorRow, col = cursorCol,
-        alive = if (LiveNeighbors.From(cursorRow, cursorCol, cells).length >= 2 &&
-          LiveNeighbors.From(cursorRow, cursorCol, cells).length <= 3) true
+        alive = if (LiveNeighborsFrom(cursorRow, cursorCol, cells).length >= 2 &&
+          LiveNeighborsFrom(cursorRow, cursorCol, cells).length <= 3) true
         else false
       )
     }
