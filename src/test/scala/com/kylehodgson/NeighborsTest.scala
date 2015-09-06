@@ -6,7 +6,7 @@ class NeighborsTest extends FunSuite {
   test("NeighborsFrom can get neighbors from a named location within a sequence of cells ") {
     val board = new Board(5)
     val neighborList = Neighbors.From(3, 3, board.cells)
-    for (cursorRow <- 2 to 4; cursorCol <- 2 to 4;if (!(cursorRow == 3 && cursorCol == 3))) {
+    for (cursorRow <- 2 to 4; cursorCol <- 2 to 4;if !(cursorRow == 3 && cursorCol == 3)) {
         assert(neighborList.exists(c => c.row == cursorRow && c.col == cursorCol))
     }
   }
@@ -20,7 +20,7 @@ class NeighborsTest extends FunSuite {
   test("When NeighborsFrom gets neighbors it handles edge cases correctly") {
     val board = new Board(5)
     val neighborList = Neighbors.From(1, 1, board.cells)
-    for (cursorRow <- 1 to 2; cursorCol <- 1 to 2; if (!(cursorCol == 1 && cursorRow == 1))) {
+    for (cursorRow <- 1 to 2; cursorCol <- 1 to 2; if !(cursorCol == 1 && cursorRow == 1)) {
       assert(neighborList.exists(c => c.row == cursorRow && c.col == cursorCol),
         "\nMissing neighbor: row " + cursorRow + " col " + cursorCol)
     }
